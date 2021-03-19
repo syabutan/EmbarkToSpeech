@@ -1,0 +1,135 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Conversation
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Conversation</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="line-bc"><!--chat start-->
+
+  <ion-buttons slot="end">
+    <ion-button (click)="close()">
+      <ion-icon name="close"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+
+    <!-- <ion-grid no-padding>
+      <ion-row no-padding>
+        <ion-col size="10" no-padding>
+          <ion-card no-padding>
+            <ion-card-content no-padding>
+              CP side conversation
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col size="2">
+          <ion-icon name="person-outline"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-grid> -->
+
+
+
+
+
+
+
+
+
+
+
+
+  <video width="100%" controls autoplay playsinline webkit-playsinline>
+    <source [src]="videoUrl" type="video/mp4" />
+  </video>
+
+
+        <!--CP side comment start-->
+        <div class="balloon6">
+          <div class="faceicon">
+            <!-- <img src="https://cdn0.iconfinder.com/data/icons/avatar-2/500/man-2-512.png"/> -->
+            <img src="../../assets/icon/face1.PNG"/>
+          </div>
+          <div class="chatting">
+            <div class="says">
+              <p>こんにちは、元気ですか？</p>
+            </div>
+          </div>
+        </div>
+
+        <!--CP side comment end->
+
+      <!-- Your comment start-->
+      <div class="mycomment">
+        <p>
+        Your comment
+        </p>
+        <div class="balloon6">
+        <div class="faceicon">
+          <!-- <img src="https://cdn0.iconfinder.com/data/icons/avatar-2/500/man-2-512.png"/> -->
+          <!-- <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" /> -->
+        </div>
+        </div>
+      </div>
+      <!--Your comment end -->
+
+</div><!--chat end-->
+
+
+  <ion-card
+  (click)="onReply()">
+    <ion-card-content>
+      <ion-icon name="mic-circle-outline"></ion-icon>
+      はい元気です。元気ですか？
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card
+  (click)="onReply()"
+  >
+    <ion-card-content>
+      <ion-icon name="mic-circle-outline"></ion-icon>
+      はい元気です。私たちは最近この近くに引っ越してきました。地元の方ですか？
+    </ion-card-content>
+  </ion-card>
+
+
+  <ion-buttons *ngIf="voiceActiveSectionDisabled; else voicesection;">
+      <ion-button  color="danger" type="button"
+        (click)="onStartVoiceRecognition()">Record
+      </ion-button>
+  </ion-buttons>
+
+  <ng-template #voicesection>
+    <ng-container *ngIf="!voiceActiveSectionError; else failure">
+      <ng-container *ngIf="voiceText; else start">
+        <span>{{voiceText}}</span>
+      </ng-container>
+      <ng-template #start>
+        <ng-container *ngIf="voiceActiveSectionListening; else beginning">
+          <span>Listening...</span>
+        </ng-container>
+        <ng-template #beginning>
+          <span>Start talking...</span>
+        </ng-template>
+      </ng-template>
+    </ng-container>
+    <ng-template #failure>
+      <span>Didn't catch that</span>
+    </ng-template>
+    <ion-buttons>
+      <ion-button (click)="onCloseVoiceRecognition()">Close</ion-button>
+      <ion-button (click)="onStartVoiceRecognition()">Restart</ion-button>
+    </ion-buttons>
+  </ng-template>
+
+  <!-- <app-explore-container name="Tab 2 page"></app-explore-container> -->
+</ion-content>
