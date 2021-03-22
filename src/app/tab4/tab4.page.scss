@@ -28,14 +28,31 @@ ion-icon {
   width: 40px;
 }
 
+.balloon6 .faceiconright {
+  float: right;
+  margin-left: -50px;
+  width: 40px;
+}
+
 .balloon6 .faceicon img{
   width: 100%;
   height: auto;
   border-radius: 50%;
 }
+.balloon6 .faceiconright img{
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+}
+
 .balloon6 .chatting {
   width: 100%;
   text-align: left;
+}
+.balloon6 .chattingright {
+  width: 100%;
+  text-align: right;
+  margin-left: -50px;
 }
 .says {
   display: inline-block;
@@ -67,6 +84,10 @@ ion-icon {
 .mycomment {
   margin: 10px 0;
 }
+.mycommentmargin{
+  margin-top:5px;
+  margin-right: 42px;
+}
 .mycomment p {
   display: inline-block;
   position: relative;
@@ -74,7 +95,7 @@ ion-icon {
   padding: 8px;
   max-width: 250px;
   border-radius: 12px;
-  background: #30e852;
+  background: #ffffff;
   font-size: 15px;
 }
 
@@ -84,7 +105,7 @@ ion-icon {
   top: 3px;
   right: -19px;
   border: 8px solid transparent;
-  border-left: 18px solid #30e852;
+  border-left: 18px solid #ffffff;
   -webkit-transform: rotate(-35deg);
   transform: rotate(-35deg);
 }

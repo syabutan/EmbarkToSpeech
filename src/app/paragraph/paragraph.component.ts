@@ -9,6 +9,7 @@ import { GoogletranslateService } from '../services/googletranslate.service';
 // import { ElementRef, NgZone, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
+
 @Component({
   selector: 'app-paragraph',
   templateUrl: './paragraph.component.html',
@@ -28,6 +29,7 @@ export class ParagraphComponent implements OnInit {
   score: number = 0;
   langFrom = new FormControl('en');
   guideSentence = 'Practice saying...';
+  videoTimeJapanese = ["0,1","2,7", "8,10", "11,12", "13,14", "15,22"];
 
 
 
