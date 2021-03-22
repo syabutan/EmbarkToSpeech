@@ -37,7 +37,7 @@ export class Tab3Page {
       this.videourl = "https://www.youtube.com/embed/FM9_kTF0T9A";
     }
 
-
+    
   // public playVideo() {
   //   this.videoOpts = {volume : 1.0 };
   //   this.videoPlayer.play('..\assets\videos\002ClayPotter.mpeg').then(() => {

@@ -7,8 +7,8 @@ import {CheckSentence} from '../services/checksentence.service';
 import { RecordAudio } from '../services/recordaudio.service';
 import { ModalController } from '@ionic/angular';
 
-
 declare const annyang: any;
+
 
 @Component({
   selector: 'app-tab4',

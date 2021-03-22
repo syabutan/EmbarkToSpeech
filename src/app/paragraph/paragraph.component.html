@@ -1,3 +1,8 @@
+
+
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    
 <label for="langFrom" style ="padding-left: 15px">Choose Language To Translate From: </label>
 <select id="langFrom" [formControl]="langFrom">
   <option value="en" selected>English</option>
@@ -7,7 +12,7 @@
   <option value="ja">Japanese</option>
 </select>
 
-<label for="langTo">Choose Language To Translate Into: </label>
+<label for="langTo" style ="padding-left: 15px">Choose Language To Translate Into: </label>
 <select id="langTo" [formControl]="langTo">
   <option value="en" selected>English</option>
   <option value="es">Spanish</option>
@@ -15,7 +20,119 @@
   <option value="ar">Arabic</option>
   <option value="ja">Japanese</option>
 </select>
+    <!-- <ion-title>
+      Conversation
+    </ion-title> -->
+  </ion-toolbar>
+</ion-header>
 
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Conversation</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="line-bc"><!--chat start-->
+
+  <ion-buttons slot="end">
+    <ion-button (click)="close()">
+      <ion-icon name="close"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+
+    <!-- <ion-grid no-padding>
+      <ion-row no-padding>
+        <ion-col size="10" no-padding>
+          <ion-card no-padding>
+            <ion-card-content no-padding>
+              CP side conversation
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+        <ion-col size="2">
+          <ion-icon name="person-outline"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-grid> -->
+
+
+
+  <video [src]="videoUrl" type="video/mp4" width="100%" controls autoplay playsinline webkit-playsinline>
+  </video>
+
+
+        <!--CP side comment start-->
+        <div class="balloon6">
+          <div class="faceicon">
+            <!-- <img src="https://cdn0.iconfinder.com/data/icons/avatar-2/500/man-2-512.png"/> -->
+            <img src="../../assets/icon/steven.jpg"/>
+          </div>
+          <div class="chatting">
+            <div class="says">
+              <p>{{computerSentence}}</p>
+            </div>
+          </div>
+        </div>
+
+        <!--CP side comment end->
+      Your comment start -->
+      <div class = "mycomment">
+        <div class="balloon6">
+          <div class="faceiconright">
+            <!-- <img src="https://cdn0.iconfinder.com/data/icons/avatar-2/500/man-2-512.png"/> -->
+            <img src="../../assets/icon/blank-profile-picture-973460_1280.webp"/>
+          </div>
+          <!-- <div *ngIf = "voiceText" class="mycommentmargin">
+              <p>{{voiceText}}</p>
+          </div> -->
+          <div *ngFor = "let voice of userVoiceText" class="mycommentmargin">
+            <p>{{voice}}</p>
+        </div>
+        </div>
+      </div>
+    
+      <!-- <div class="mycomment">
+        <p>
+          {{voiceText}}
+        </p>
+        <div class="balloon6">
+        <div class="faceiconright">
+          <img src="../../assets/icon/blank-profile-picture-973460_1280.webp"/>
+          <img src="https://cdn0.iconfinder.com/data/icons/avatar-2/500/man-2-512.png"/> -->
+          <!-- <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" /> -->
+        <!-- </div>
+        </div>
+      </div> --> 
+      <!--Your comment end -->
+
+      
+</div><!--chat end-->
+<hr>
+<ion-buttons *ngIf="voiceActiveSectionDisabled; else voicesection;">
+  <ion-button  color="danger" type="button"
+    (click)="onStartVoiceRecognition()">Record
+  </ion-button>
+</ion-buttons>
+<hr>
+  <ion-card
+  (click)="onReply()">
+    <ion-card-content>
+      <ion-icon name="mic-circle-outline"></ion-icon>
+      {{choiceOne}}
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card
+  (click)="onReply()"
+  >
+    <ion-card-content>
+      <ion-icon name="mic-circle-outline"></ion-icon>
+      {{choiceTwo}}    
+      </ion-card-content>
+  </ion-card>
+
+  
 
 <!-- <div class = "container">
   <button (click) = "onStart()">Start Practice
@@ -25,32 +142,36 @@
 
 <hr>
 
-<div *ngIf="voiceActiveSectionDisabled; else voicesection;">
+<!-- <div *ngIf="voiceActiveSectionDisabled; else voicesection;">
     <button type="button" (click)="onStartVoiceRecognition(); onStart()">Start Practice</button>
-  </div>
+  </div> -->
   <ng-template #voicesection>
     <ng-container *ngIf="!voiceActiveSectionError; else failure">
       <ng-container *ngIf="voiceText; else start">
-          <span>{{voiceText}}</span>
+        <ion-buttons>
+          <ion-button color="danger" type="button"(click)="onCloseVoiceRecognition()">Close</ion-button>
+          <ion-button color="success" type="button"(click)="onStartVoiceRecognition()">Restart</ion-button>
+        </ion-buttons>
       </ng-container>
       <ng-template #start>
         <ng-container
           *ngIf="voiceActiveSectionListening; else beginning">
-          <span>Listening...</span>
+          <span style = "margin-left:10px">Listening...</span>
         </ng-container>
         <ng-template #beginning>
-          <span>Start talking...</span>
+          <span style = "margin-left:10px">Listening...</span>
         </ng-template>
       </ng-template>
     </ng-container>
     <ng-template #failure>
-      <span>Didn't catch that</span>
+      <span style = "margin-left:10px">Didn't catch that</span>
+      <ion-buttons>
+        <ion-button color="danger" type="button"(click)="onCloseVoiceRecognition()">Close</ion-button>
+        <ion-button color="success" type="button"(click)="onStartVoiceRecognition()">Restart</ion-button>
+      </ion-buttons>
     </ng-template>
-    <div>
-      <button (click)="onCloseVoiceRecognition()">Close</button>
-      <button (click)="onStartVoiceRecognition()">Record</button>
-    </div>
-    <div>
+
+    <!-- <div>
       <div class="container" style = "margin-top: 20px;">
         <button (click) = "onCheck()">Check
         </button>
@@ -63,10 +184,8 @@
            <button id="translatebtn" (click) = "send('brown')" style="margin-left: auto;">Translate</button>
          </div>
          <p>Accuracy = {{score}}</p>
-
-
       </div>
-    </div>
+    </div> -->
   </ng-template>
 
   <div *ngIf = "sentenceCounter >= 1">
@@ -78,3 +197,20 @@
 <div>
   <p>Translation: {{data.title}}</p>
 </div>
+
+
+<div>
+      <div class="container" style = "margin-top: 20px;">
+        <button (click) = "onCheck()">Check
+        </button>
+        <button id="translatebtn" (click) = "send('userAudio')" style="margin-left: auto;">Translate User Audio</button>
+          <p>{{guideSentence}}</p>
+         <p>{{currentSentence}}</p>
+
+         <div>
+           <button (click) = "onListenToSentence()">Listen to sentence</button>
+           <button id="translatebtn" (click) = "send('brown')" style="margin-left: auto;">Translate</button>
+         </div>
+         <p>Accuracy = {{score}}</p>
+      </div>
+    </div>

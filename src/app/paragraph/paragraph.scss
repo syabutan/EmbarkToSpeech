@@ -1,0 +1,111 @@
+ion-icon {
+  font-size: 20px;
+}
+
+
+
+/*background */
+.line-bc {
+  padding: 20px 10px;
+  max-width: 450px;
+  margin: 15px auto;
+  text-align: right;
+  font-size: 14px;
+  background: #7da4cd;
+
+}
+
+/*CP side comment*/
+.balloon6 {
+  width: 100%;
+  margin: 10px 0;
+  overflow: hidden;
+}
+
+.balloon6 .faceicon {
+  float: left;
+  margin-right: -50px;
+  width: 40px;
+}
+
+.balloon6 .faceiconright {
+  float: right;
+  margin-left: -50px;
+  width: 40px;
+}
+
+.balloon6 .faceicon img{
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+}
+.balloon6 .faceiconright img{
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+}
+
+.balloon6 .chatting {
+  width: 100%;
+  text-align: left;
+}
+.balloon6 .chattingright {
+  width: 100%;
+  text-align: right;
+  margin-left: -50px;
+}
+.says {
+  display: inline-block;
+  position: relative;
+  margin: 0 0 0 50px;
+  padding: 10px;
+  max-width: 250px;
+  border-radius: 12px;
+  background: #edf1ee;
+}
+
+.says:after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 3px;
+  left: -19px;
+  border: 8px solid transparent;
+  border-right: 18px solid #edf1ee;
+  -webkit-transform: rotate(35deg);
+  transform: rotate(35deg);
+}
+.says p {
+  margin: 0;
+  padding: 0;
+}
+
+/*Your comment*/
+.mycomment {
+  margin: 10px 0;
+}
+.mycommentmargin{
+  margin-top:5px;
+  margin-right: 42px;
+}
+.mycomment p {
+  display: inline-block;
+  position: relative;
+  margin: 0 10px 0 0;
+  padding: 8px;
+  max-width: 250px;
+  border-radius: 12px;
+  background: #ffffff;
+  font-size: 15px;
+}
+
+.mycomment p:after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  right: -19px;
+  border: 8px solid transparent;
+  border-left: 18px solid #ffffff;
+  -webkit-transform: rotate(-35deg);
+  transform: rotate(-35deg);
+}

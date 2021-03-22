@@ -38,15 +38,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
   <video width="100%" controls autoplay playsinline webkit-playsinline>
     <source [src]="videoUrl" type="video/mp4" />
   </video>
@@ -101,6 +92,11 @@
     </ion-card-content>
   </ion-card>
 
+<!-- <div voiceselection>
+  <ion-button  color="danger" type="button"
+  (click)="onStartVoiceRecognition()">Record
+  </ion-button>
+</div> -->
 
   <ion-buttons *ngIf="voiceActiveSectionDisabled; else voicesection;">
       <ion-button  color="danger" type="button"

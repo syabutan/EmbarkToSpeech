@@ -3,7 +3,7 @@ import {CheckSentence} from '../services/checksentence.service';
 import {NgZone} from '@angular/core';
 import { Injectable } from '@angular/core';
 import {FormControl} from '@angular/forms'
-import {Observable} from 'rxjs';
+import {Observable, range, Subject} from 'rxjs';
 
 declare const annyang: any;
 
@@ -11,8 +11,9 @@ declare const annyang: any;
     providedIn: 'root'
   })
 export class RecordAudio{
+  userVoiceText = [];
 
-    voiceActiveSectionDisabled: boolean = true;
+  voiceActiveSectionDisabled: boolean = true;
 	voiceActiveSectionError: boolean = false;
 	voiceActiveSectionSuccess: boolean = false;
 	voiceActiveSectionListening: boolean = false;
@@ -20,8 +21,8 @@ export class RecordAudio{
     voiceTextReady: boolean = false;
     public voiceTextReadyObs = new Observable<boolean>();
     language: string = 'en';
-
-    voiceActiveSectionDisabledChanged = new EventEmitter<boolean>();
+	userVoiceTextChanged = new EventEmitter<any[]>();
+  voiceActiveSectionDisabledChanged = new EventEmitter<boolean>();
 	voiceActiveSectionErrorChanged = new EventEmitter<boolean>();
 	voiceActiveSectionSuccessChanged = new EventEmitter<boolean>();
 	voiceActiveSectionListeningChanged = new EventEmitter<boolean>();
@@ -31,7 +32,16 @@ export class RecordAudio{
 	langFrom = new FormControl('en');
 
   constructor(private checkSentence: CheckSentence, private ngZone: NgZone){}
+  //Trying to get the service to talk to component 
 
+  private sentenceReady = new Subject<any>();
+
+  sentenceReady$ = this.sentenceReady.asObservable();
+  
+  sentenceIsReady(){
+    this.sentenceReady.next();
+  }
+  
 	initializeVoiceRecognitionCallback(): void {
 		annyang.addCallback('error', (err) => {
       if(err.error === 'network'){
@@ -70,19 +80,29 @@ export class RecordAudio{
       this.voiceText = queryText;
       this.voiceTextChanged.emit(this.voiceText);
       this.voiceTextReady = true;
+      this.userVoiceText.push(this.voiceText);
+      this.userVoiceTextChanged.emit(this.userVoiceText);
+      this.sentenceIsReady();
+      console.log(this.userVoiceText);
+      //Observable 
+      
     //   this.voiceTextReadyObs = true;
-      this.voiceTextReadyChanged.emit(this.voiceTextReady);
-
+    this.voiceTextReadyChanged.emit(this.voiceTextReady);
 	  this.ngZone.run(() => this.voiceActiveSectionListening = false, this.voiceActiveSectionListeningChanged.emit(this.voiceActiveSectionListening));
       this.ngZone.run(() => this.voiceActiveSectionSuccess = true, this.voiceActiveSectionSuccessChanged.emit(this.voiceActiveSectionSuccess));
       this.voiceTextReadyChanged.emit(this.voiceTextReady);
       console.log(this.voiceText);
       console.log(this.voiceTextReady);
+      annyang.removeCallback('result');
 		});
 	}
 
+  clearText(){
+    this.userVoiceText = [];
+  }
+
 	startVoiceRecognition(): void {
-        this.voiceActiveSectionDisabled = false;
+    this.voiceActiveSectionDisabled = false;
 		this.voiceActiveSectionError = false;
 		this.voiceActiveSectionSuccess = false;
         this.voiceText = undefined;
@@ -92,7 +112,7 @@ export class RecordAudio{
         this.voiceActiveSectionErrorChanged.emit(this.voiceActiveSectionError);
         this.voiceActiveSectionSuccessChanged.emit(this.voiceActiveSectionSuccess);
         this.voiceTextChanged.emit(this.voiceText);
-        this.voiceTextReadyChanged.emit(this.voiceTextReady);
+        this.voiceTextReadyChanged.emit(this.voiceTextReady);        
 
 		if (annyang) {
 			let commands = {
@@ -109,17 +129,17 @@ export class RecordAudio{
 	}
 
 	closeVoiceRecognition(): void {
-        this.voiceActiveSectionDisabled = true;
+    this.voiceActiveSectionDisabled = true;
 		this.voiceActiveSectionError = false;
 		this.voiceActiveSectionSuccess = false;
 		this.voiceActiveSectionListening = false;
 		this.voiceText = undefined;
 
-        this.voiceActiveSectionDisabledChanged.emit(this.voiceActiveSectionDisabled);
-        this.voiceActiveSectionErrorChanged.emit(this.voiceActiveSectionError);
-        this.voiceActiveSectionSuccessChanged.emit(this.voiceActiveSectionSuccess);
-        this.voiceTextChanged.emit(this.voiceText);
-        this.voiceActiveSectionListeningChanged.emit(this.voiceActiveSectionListening);
+      this.voiceActiveSectionDisabledChanged.emit(this.voiceActiveSectionDisabled);
+      this.voiceActiveSectionErrorChanged.emit(this.voiceActiveSectionError);
+      this.voiceActiveSectionSuccessChanged.emit(this.voiceActiveSectionSuccess);
+      this.voiceTextChanged.emit(this.voiceText);
+      this.voiceActiveSectionListeningChanged.emit(this.voiceActiveSectionListening);
 
 		if(annyang){
       annyang.abort();

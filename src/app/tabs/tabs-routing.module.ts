@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ParagraphComponent } from '../paragraph/paragraph.component';
 import { TabsPage } from './tabs.page';
 
 const routes: Routes = [
+  {path: 'practice', component: ParagraphComponent},
   {
     path: 'tabs',
     component: TabsPage,

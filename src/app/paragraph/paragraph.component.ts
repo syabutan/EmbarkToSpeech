@@ -7,14 +7,16 @@ import { GoogleObj, Solution } from '../models/solution';
 import { SolutionService } from '../services/solution.service';
 import { GoogletranslateService } from '../services/googletranslate.service';
 // import { ElementRef, NgZone, ViewChild } from '@angular/core';
-
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-paragraph',
-  templateUrl: './paragraph.component.html'
+  templateUrl: './paragraph.component.html',
+  styleUrls: ['paragraph.scss']
 })
 
 export class ParagraphComponent implements OnInit {
+  userVoiceText = [];
   voiceActiveSectionDisabled: boolean = true;
 	voiceActiveSectionError: boolean = false;
 	voiceActiveSectionSuccess: boolean = false;
@@ -24,9 +26,15 @@ export class ParagraphComponent implements OnInit {
   currentSentence: string = '';
   sentenceCounter: number = 0;
   score: number = 0;
-  conversationSentence: string = '';
   langFrom = new FormControl('en');
   guideSentence = 'Practice saying...';
+
+
+
+  videoUrl: SafeResourceUrl;
+  videoBase = "../../assets/videos/englishpractice.mp4#t=";
+  videoTime = ["1,4","7,11", "14,17", "11,12", "13,14", "15,22"];
+  videoCount = 0;
 
   langTo = new FormControl('en');
 
@@ -36,10 +44,18 @@ export class ParagraphComponent implements OnInit {
     detail: ''
   };
 
-  constructor(private google: GoogletranslateService , private solution: SolutionService, private recordAudio: RecordAudio, private checkSentence: CheckSentence) { }
+  constructor(private google: GoogletranslateService , private solution: SolutionService, private recordAudio: RecordAudio, private checkSentence: CheckSentence) {
+    this.videoUrl = this.videoBase + this.videoTime[0];
+   }
+  
+  
 
+  convoEnglishCom = ['Hello! It is nice to meet you.', 'Yeah! I have lived here my whole life. Are you new here?', 'No, I actually just moved here 6 months ago.', 'No, I live here alone. My family lives in a different country.', 'Yeah! I live here with my wife and three kids.', 'I have just seen you guys walking the street for the last couple of weeks. What are you doing?'];
+  convoEnglishUser = ['Hey! It is nice to meet you too. Are you from around here?', 'Yeah I just got here a few weeks ago. Do you live here with your family?','Yeah! I just moved here. Have you seen missionaries like us before?'];
   //Note that these practice paragraphs in spanish do not have accent marks or double question marks
-
+  computerSentence: string = this.convoEnglishCom[0];
+  choiceOne: string = this.convoEnglishUser[0];
+  choiceTwo: string = '';
   practiceParagraphBrownAudio = ['../assets/soundFile/Me llamo Benjamin Brown.mp3',
                                 '../assets/soundFile/Soy de California, en los Estados Unidos. Este barrio es muy bonito. Cuanto tiempo lleva aqui.mp3',
                                 '../assets/soundFile/Como se llama su esposa.mp3',
@@ -89,6 +105,10 @@ export class ParagraphComponent implements OnInit {
       (change: boolean) => this.voiceActiveSectionDisabled = change
     );
 
+    this.recordAudio.userVoiceTextChanged.subscribe(
+      (change: any[]) => this.userVoiceText = change
+    );
+
     this.recordAudio.voiceTextReadyChanged.subscribe(
       (change: boolean) => this.voiceTextReady = change
     );
@@ -131,16 +151,31 @@ export class ParagraphComponent implements OnInit {
     this.currentSentence = this.practiceParagraphBrown[this.sentenceCounter];
   }
   onCheck(){
-    this.score = this.checkSentence.checkPercent(this.currentSentence,this.voiceText);
-    if(this.score > .8){
-      this.sentenceCounter +=1;
-      this.conversationSentence = this.practiceParagraphNeighbor[this.sentenceCounter-1];
-      this.currentSentence = this.practiceParagraphBrown[this.sentenceCounter];
-      let audio = new Audio();
-      audio.src = this.practiceParagraphNeighborAudio[this.sentenceCounter -1];
+    if(this.choiceOne !== ''){
+      if(this.choiceTwo !==''){
+        this.score =  Math.max(this.checkSentence.checkPercent(this.choiceOne,this.voiceText), this.checkSentence.checkPercent(this.choiceTwo,this.voiceText));
+      }
+      else {this.score = this.checkSentence.checkPercent(this.choiceOne,this.voiceText);}
+    }
+    else if (this.choiceTwo !== ''){
+      this.checkSentence.checkPercent(this.choiceTwo,this.voiceText);
+    }
 
-    audio.load();
-    audio.play();
+    // this.score = this.checkSentence.checkPercent(this.,this.voiceText);
+    if(this.score > .8){
+      this.videoCount +=1;
+      this.guideSentence = 'Good Job!'
+      this.userVoiceText = [];
+      this.recordAudio.clearText();
+      this.videoUrl = this.videoBase + this.videoTime[this.videoCount];
+      this.sentenceCounter +=1;
+      this.computerSentence = this.convoEnglishCom[this.sentenceCounter];
+      this.choiceOne = this.convoEnglishUser[this.sentenceCounter];
+      this.choiceTwo = this.convoEnglishUser[this.sentenceCounter + 1];
+    //   let audio = new Audio();
+    //   audio.src = this.practiceParagraphNeighborAudio[this.sentenceCounter -1];
+    // audio.load();
+    // audio.play();
     }
     else if(this.score < .8){
       this.guideSentence = 'Try again :)'
