@@ -48,8 +48,8 @@ export class Tab4Page implements OnInit {
   constructor(private modalCtrl: ModalController, private google: GoogletranslateService , private solution: SolutionService, private recordAudio: RecordAudio, private checkSentence: CheckSentence) {
     this.videoUrl = this.videoBase + this.videoTime[0];
    }
-  
-  
+
+
 
   convoEnglishCom = ['Hello! It is nice to meet you.', 'Yeah! I have lived here my whole life. Are you new here?', 'No, I actually just moved here 6 months ago.', 'No, I live here alone. My family lives in a different country.', 'Yeah! I live here with my wife and three kids.', 'I have just seen you guys walking the street for the last couple of weeks. What are you doing?'];
   convoEnglishUser = ['Hey! It is nice to meet you too. Are you from around here?', 'Yeah I just got here a few weeks ago. Do you live here with your family?','Yeah! I just moved here. Have you seen missionaries like us before?'];
@@ -245,5 +245,8 @@ export class Tab4Page implements OnInit {
         console.log(err);
       }
     );
+  }
+  close() {
+    this.modalCtrl.dismiss();
   }
 }
